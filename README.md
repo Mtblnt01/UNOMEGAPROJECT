@@ -27,12 +27,12 @@ private List<string> robotHand = new List<string>();
 private string topCard;
 private Random rnd = new Random();
 
-###DeckInicialization()
+### DeckInicialization()
 - Ez a pakli létrehozására lett létrehozva
 - létrehozzuk az osszes létező kártyát majd megkeverjük őket.
 
 
-  private void DeckInicialization()
+        private void DeckInicialization()
         {
             string[] colors = { "Red", "Blue", "Green", "Yellow" };
             string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", };
@@ -49,7 +49,7 @@ private Random rnd = new Random();
         }
 
 
-###GameStart()
+### GameStart()
 - Ezzel kezdődik a játék amit a fő futásban meghívunk.
 - ebben meghuvjuk a pakli letrehozas fuggvenyt
 - a playernek és a robotnak kiosztjuk a kártyákat, majd a középső kartyat is.
@@ -83,7 +83,7 @@ private Random rnd = new Random();
             TopCardShow();
         }
 
-###UserCardShow()
+### UserCardShow()
 -ebben a fuggvényben a felhasználó kártyáit frissítsuk a felhasználónak, ezt sokszok megkell hívni mivel amikor rákattintunk egy kártyára és az eltunik akkor ezt frissíteni kell vagy ha húzunk egy új lapot.
 - minden egyes meghivásnál kitörli az egészet és mivel a privát változót mindig frissítsuk lerakásnál és húzásnál, azt kiíratni a felhasználónak.
 - egy click fuggveny a kartyaknak
@@ -92,38 +92,36 @@ private Random rnd = new Random();
 
 - mivel itt az egész canvast kitörlöm, ezért a laphuzas gombot is újrakell csinálni (adni kell egy click fuggvenyt neki es elkell helyezni canvason belul)
 
-private void UserCardShow()
+        private void UserCard_Click(object sender, RoutedEventArgs e)
         {
-            myCanvas.Children.Clear();
-
-            for (int i = 0; i < userHand.Count; i++)
+            if (sender is Button button)
             {
-                Button btn = new Button
+                string chosenUserCard = button.Content.ToString();
+
+                if (cardCanBePlaced(chosenUserCard))
                 {
-                    Content = userHand[i],
-                    Width = 50,
-                    Height = 70
-                };
-                Canvas.SetLeft(btn, 100 + i * 60);
-                Canvas.SetTop(btn, 100);
-                btn.Click += UserCard_Click;
-                myCanvas.Children.Add(btn);
-            }
+                    userHand.Remove(chosenUserCard);
+                    topCard = chosenUserCard;
+                    UserCardShow();
+                    TopCardShow();
 
-            //HUZZUNK KARTYAT
-            Button pickCardButton = new Button
-            {
-                Content = "Húzzunk egy kártyát",
-                Width = 150,
-                Height = 30
-            };
-            Canvas.SetLeft(pickCardButton, 100);
-            Canvas.SetTop(pickCardButton, 300);
-            pickCardButton.Click += PickACard_Click;
-            myCanvas.Children.Add(pickCardButton);
+                    if (userHand.Count == 0)
+                    {
+                        MessageBox.Show("Congratulations! YOU WON!");
+                    }
+                    else
+                    {
+                        robotMove();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You cant place THAT card");
+                }
+            }
         }
 
-###TopCardShow()
+### TopCardShow()
 -ugyanaz mint a usercard csak ez a kozepso kartyat frissiti
 -ezt azert kell kulon mert amikor a robot mozog ezt akkor is kell frissiteni
 
@@ -141,7 +139,7 @@ private void UserCardShow()
         }
 
 
-###UserCard_Click(object sender, RoutedEventArgs e)
+### UserCard_Click(object sender, RoutedEventArgs e)
 - ez a click esemenye a felhasznalo kartyainak nyomasanak
 - belekell rakni egy kulon valtozoba, amennyiben az a kartya lerakhato rakja le, ha nem értesítse a felhasznalot, ezel egyutt meglehet nezni hogy az az utolso kartya volt e es ha lerakhato akkor nyert a felhasznalo
 - ha nem akkor a robot kovetkezik
@@ -175,7 +173,7 @@ private void UserCardShow()
             }
         }
 
-###PickACard_Click(object sender, RoutedEventArgs e)
+### PickACard_Click(object sender, RoutedEventArgs e)
 - hogyha a pakli még nem üres akkor húzhatunk egy kartyat ami hozzaadodik a felhasznalo kartyaihoz, és mivel az már egy körnek számít, a robot jön.
 
         private void PickACard_Click(object sender, RoutedEventArgs e)
@@ -194,7 +192,7 @@ private void UserCardShow()
             }
         }
 
-###robotMove()
+### robotMove()
 -alapbol a robot nem rakhat le kartyat mert elotte megkell nezni hogy a kartyaibol van e a felteteleknek megfelelo kartya
 -ha rakhat akkor rakjon és menjen ki a függvenybol
 -amennyiben nincsen olyan kartyaja de a pakliban van még kartya akkor huzzon egyet, frissitse a top kartyat ha veletlen rakott volna
@@ -245,11 +243,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace UNO
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         private List<string> deck = new List<string>();
