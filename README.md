@@ -1,7 +1,7 @@
 # UNOMEGAPROJECT
 
-#Ez a project asztali alkalmazások fejlesztésére készült, ahol egy canvason belul egy UNO programot kellett létrehozzak.
-##Maga a játék lényege:
+# Ez a project asztali alkalmazások fejlesztésére készült, ahol egy canvason belul egy UNO programot kellett létrehozzak.
+## Maga a játék lényege:
 - Van egy felhasználó aki egy robot ellen játszik.
 - a felhasználó kártyái és a kozépen lévő kártyák vannak csak megmutatva
 - A játékos kártyái egymás mellé vannak kiiratva
@@ -13,8 +13,8 @@
 - a felhasználónak 5 a robotnak pedig 10kártyája van kezdéskor, ez megnöveli a játékélményt mivel valószínűleg a felhasználó fog nyerni.
 - tanárúr kérésére angolul lesz írva minden de itt az md fileba minden magyarul lesz magyarázva.
 
-##A kód magyarázata:
-###privát változók létrehozása
+## A kód magyarázata:
+### privát változók létrehozása
 -kell egy pakli string lista
 -felhasznalo kartyainak string listaja
 -robot kartyainak string listája
