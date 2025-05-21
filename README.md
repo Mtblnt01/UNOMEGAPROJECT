@@ -13,7 +13,14 @@
 - a felhasználónak 5 a robotnak pedig 10kártyája van kezdéskor, ez megnöveli a játékélményt mivel valószínűleg a felhasználó fog nyerni.
 - tanárúr kérésére angolul lesz írva minden de itt az md fileba minden magyarul lesz magyarázva.
 
-## A kód magyarázata:
+# A kód magyarázata:
+
+## XAML
+
+      <Canvas Name="unoCanvas" Background="LightGray"/>
+
+## CS
+
 ### privát változók létrehozása
 -kell egy pakli string lista
 -felhasznalo kartyainak string listaja
@@ -437,4 +444,3 @@ namespace UNO
 
 
     }
-}
