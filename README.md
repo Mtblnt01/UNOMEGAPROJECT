@@ -8,8 +8,7 @@
 - körök vannak minden egyes felhasználó által tett kattintás után a robot azzonnal reagálni fog
 - 2 különböző helyre tudsz kattintan:
       - vagy a paklidban lévő kártyákra, ami ami megjelenik a középen lévő kártyán. Amennyiben a robotnak is van letehető kártyája azt azonnal látható lesz.
-      - vagy a kártyhúzás gombra, a kártyáid között lesz +1, a robot pedig azonnal reagál a lehető legjobb lépéssel.
-
+      - vagy a kártyahúzás gombra, a kártyáid között lesz +1, a robot pedig azonnal reagál a lehető legjobb lépéssel.
 - a felhasználónak 5 a robotnak pedig 10kártyája van kezdéskor, ez megnöveli a játékélményt mivel valószínűleg a felhasználó fog nyerni.
 - tanárúr kérésére angolul lesz írva minden de itt az md fileba minden magyarul lesz magyarázva.
 
@@ -28,32 +27,38 @@
 -kozepso kartya
 -mivel pakli keverésnél random keverés van ezért egy kell a random
 
-private List<string> deck = new List<string>();
-private List<string> userHand = new List<string>();
-private List<string> robotHand = new List<string>();
-private string topCard;
-private Random rnd = new Random();
+      private List<string> deck = new List<string>();
+      private List<string> userHand = new List<string>();
+      private List<string> robotHand = new List<string>();
+      private string topCard;
+      private Random rnd = new Random();
 
 ### DeckInicialization()
 - Ez a pakli létrehozására lett létrehozva
 - létrehozzuk az osszes létező kártyát majd megkeverjük őket.
 
 
-        private void DeckInicialization()
-        {
-            string[] colors = { "Red", "Blue", "Green", "Yellow" };
-            string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", };
-
-            foreach (string color in colors)
-            {
-                foreach (string number in numbers)
-                {
-                    deck.Add($"{color} {number}");
-                }
-            }
-
-            deck = deck.OrderBy(x => rnd.Next()).ToList();
-        }
+              private void DeckInit()
+              {
+                  string[] colors = { "Piros", "Kék", "Zöld", "Sárga" };
+                  string[] numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+      
+                  foreach (string color in colors)
+                  {
+                      foreach (string number in numbers)
+                      {
+                          deck.Add($"{color} {number}");
+                          //System.Diagnostics.Debug.Write($"{color} {number};");
+                      }
+                  }
+      
+                  //deck = deck.OrderBy(x => rnd.Next()).ToList();
+                  Shuffle(deck);
+                  //foreach (string item in deck)
+                  //{
+                  //    System.Diagnostics.Debug.Write($"{item.ToString()}; ");
+                  //}
+              }
 
 
 ### GameStart()
@@ -86,6 +91,23 @@ private Random rnd = new Random();
       
                   UserCardShow();
                   TopCardShow();
+              }
+
+
+### Shuffle()
+- a shuffle a pakli megkeverésére szolgál minden kör legelelén
+
+              public void Shuffle(List<string> ts)
+              {
+                  int count = ts.Count;
+                  int last = count - 1;
+                  for (int i = 0; i < last; ++i)
+                  {
+                      int csereIndex = rnd.Next(i, count);
+                      var tmp = ts[i];
+                      ts[i] = ts[csereIndex];
+                      ts[csereIndex] = tmp;
+                  }
               }
 
 ### UserCardShow()
@@ -256,21 +278,26 @@ private Random rnd = new Random();
                   unoCanvas.Children.Clear();
               }
 
+### Winner()
+- a winner függvény segítségével elengedhetjuk a messagebox.show -ot minden egyes kiírásnál és egy külön függvénybe adjuk meg a kódot.
+- ezáltal szebb lesz a program egésze
 
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+## Az egész program
 
-
-namespace UNO
-{
+      using System.Text;
+      using System.Windows;
+      using System.Windows.Controls;
+      using System.Windows.Data;
+      using System.Windows.Documents;
+      using System.Windows.Input;
+      using System.Windows.Media;
+      using System.Windows.Media.Imaging;
+      using System.Windows.Navigation;
+      using System.Windows.Shapes;
+      
+      
+      namespace UNO
+      {
 
     public partial class MainWindow : Window
     {
