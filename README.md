@@ -22,9 +22,9 @@
 
 ### privát változók létrehozása
 -kell egy pakli string lista
--felhasznalo kartyainak string listaja
--robot kartyainak string listája
--kozepso kartya
+-felhasználó kártyáinak string listája
+-robot kártyáinak string listája
+-közeépső kártya
 -mivel pakli keverésnél random keverés van ezért egy kell a random
 
       private List<string> deck = new List<string>();
@@ -35,7 +35,7 @@
 
 ### DeckInicialization()
 - Ez a pakli létrehozására lett létrehozva
-- létrehozzuk az osszes létező kártyát majd megkeverjük őket.
+- létrehozzuk az összes létező kártyát majd megkeverjük őket.
 
 
               private void DeckInit()
@@ -63,10 +63,10 @@
 
 ### GameStart()
 - Ezzel kezdődik a játék amit a fő futásban meghívunk.
-- ebben meghuvjuk a pakli letrehozas fuggvenyt
-- a playernek és a robotnak kiosztjuk a kártyákat, majd a középső kartyat is.
-- a vizuális dolgokat frissítsuk vagyis a UserCardShow() > a felhasznalo kartyainak frissitese
-                                          TopCardShow() > a kozepso kartya frissitise
+- Ebben meghívjuk a pakli létrehozás függvényt
+- a playernek és a robotnak kiosztjuk a kártyákat, majd a középső kártyat is.
+- a vizuális dolgokat frissítsuk vagyis a UserCardShow() > a felhasználó kártyáinak frissítése
+                                          TopCardShow() > a középső kártya frissítése
 
 
               private void GameStart()
@@ -95,7 +95,7 @@
 
 
 ### Shuffle()
-- a shuffle a pakli megkeverésére szolgál minden kör legelelén
+- a shuffle a pakli megkeverésére szolgál minden kör legelején
 
               public void Shuffle(List<string> ts)
               {
@@ -111,13 +111,11 @@
               }
 
 ### UserCardShow()
--ebben a fuggvényben a felhasználó kártyáit frissítsuk a felhasználónak, ezt sokszok megkell hívni mivel amikor rákattintunk egy kártyára és az eltunik akkor ezt frissíteni kell vagy ha húzunk egy új lapot.
+-ebben a függvényben a felhasználó kártyáit frissítsuk a felhasználónak, ezt sokszok megkell hívni mivel amikor rákattintunk egy kártyára és az eltűnik akkor ezt frissíteni kell vagy ha húzunk egy új lapot.
 - minden egyes meghivásnál kitörli az egészet és mivel a privát változót mindig frissítsuk lerakásnál és húzásnál, azt kiíratni a felhasználónak.
-- egy click fuggveny a kartyaknak
-- Canvas segítségével betudjuk állítani a poziciojat, for segítségével ahányadik kártyát rakja bele annyiszer tolja el jobbra így nem fog egymás fellett lenni 2 kartya.
-
-
-- mivel itt az egész canvast kitörlöm, ezért a laphuzas gombot is újrakell csinálni (adni kell egy click fuggvenyt neki es elkell helyezni canvason belul)
+- egy click függvény a kártyáknak
+- Canvas segítségével betudjuk állítani a pozícióját, for segítségével ahányadik kártyát rakja bele annyiszer tolja el jobbra így nem fog egymás fellett lenni 2 kártya.
+- mivel itt az egész canvast kitörlöm, ezért a laphúzás gombot is újrakell csinálni (adni kell egy click függvényt neki es elkell helyezni canvason belul)
 
               private void UserCardShow()
               {
@@ -150,8 +148,8 @@
               }
 
 ### TopCardShow()
--ugyanaz mint a usercard csak ez a kozepso kartyat frissiti
--ezt azert kell kulon mert amikor a robot mozog ezt akkor is kell frissiteni
+-ugyanaz mint a usercard csak ez a középső kártyát frissíti
+-ezt azert kell kül mert amikor a robot mozog ezt akkor is kell frissiteni
 
               private void TopCardShow()
               {
@@ -169,9 +167,9 @@
 
 
 ### UserCard_Click(object sender, RoutedEventArgs e)
-- ez a click esemenye a felhasznalo kartyainak nyomasanak
-- belekell rakni egy kulon valtozoba, amennyiben az a kartya lerakhato rakja le, ha nem értesítse a felhasznalot, ezel egyutt meglehet nezni hogy az az utolso kartya volt e es ha lerakhato akkor nyert a felhasznalo
-- ha nem akkor a robot kovetkezik
+- ez a click esemény fut le a felhasználó kártyára nyomásának
+- belekell rakni egy külön változóba, amennyiben az a kártya lerakható rakja le, ha nem értesítse a felhasználható, ezzel együtt meglehet nézni hogy az az utolsó kártya volt e es ha lerakható akkor nyert a felhasznaló
+- ha nem akkor a robot következik
 
               private void UserCard_Click(object sender, RoutedEventArgs e)
               {
@@ -204,7 +202,7 @@
               }
 
 ### PickACard_Click(object sender, RoutedEventArgs e)
-- hogyha a pakli még nem üres akkor húzhatunk egy kartyat ami hozzaadodik a felhasznalo kartyaihoz, és mivel az már egy körnek számít, a robot jön.
+- hogyha a pakli még nem üres akkor húzhatunk egy kártyát ami hozzaadodik a felhasznaló kártyaihoz, és mivel az már egy körnek számít, a robot jön.
 
               private void PickCardButton_Click(object sender, RoutedEventArgs e)
               {
@@ -222,10 +220,10 @@
               }
 
 ### robotMove()
--alapbol a robot nem rakhat le kartyat mert elotte megkell nezni hogy a kartyaibol van e a felteteleknek megfelelo kartya
--ha rakhat akkor rakjon és menjen ki a függvenybol
--amennyiben nincsen olyan kartyaja de a pakliban van még kartya akkor huzzon egyet, frissitse a top kartyat ha veletlen rakott volna
--megkell nezni ha lerakas utan nincs e tobb kartyaja a robotnak ha nincs akkor o nyert
+-alapbol a robot nem rakhat le kártyát mert előtte megkell nézni hogy a kártyáiból van e a feltételeknek megfelelő kártya
+-ha rakhat akkor rakjon és menjen ki a függvényből
+-amennyiben nincsen olyan kártyája de a pakliban van még kártya akkor huzzon egyet, frissítse a top kártyát ha véletlen rakott volna
+-megkell nezni ha lerakás után nincs e több kártyája a robotnak ha nincs akkor o nyert
 
               private void RobotPut()
               {
@@ -260,7 +258,7 @@
               }
 
 ### cardCanBePlaced(string card)
--ezt a fuggvenyt csak ugy lehet elerni ha megadunk neki egy kartyat amit letud ellenorizni
+-ezt a függvényt csak ugy lehet elérni ha megadunk neki egy kártyát amit letud ellenőrizni
 -szétszedi a stringet, megnézi hogy a szin vagy a szám matchel- e ha igen akkor true-val tér vissza
 -ha nem akkor false-al
 
