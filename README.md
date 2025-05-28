@@ -64,31 +64,29 @@ private Random rnd = new Random();
                                           TopCardShow() > a kozepso kartya frissitise
 
 
-        private void GameStart()
-        {
-            DeckInicialization();
-
-            //5card for every player (robot and user)
-            for (int i = 0; i < 5; i++)
-            {
-                userHand.Add(deck[0]);
-                deck.RemoveAt(0);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                robotHand.Add(deck[0]);
-                deck.RemoveAt(0);
-            }
-
-            //choosing the top card
-            topCard = deck[0];
-            deck.RemoveAt(0);
-
-            //user interface update
-            UserCardShow();
-            TopCardShow();
-        }
+              private void GameStart()
+              {
+                  DeckInit();
+                  //a játékosok kártyái
+                  //a robot 2x annyi kártyával játszik.
+      
+                  for (int i = 0; i < 5; i++)
+                  {
+                      robotHand.Add(CardUp());
+                      robotHand.Add(CardUp());
+                      userHand.Add(CardUp());
+                  }
+                  //elso top kartya kivalasztasa
+                  topCard = CardUp();
+      
+                  //foreach (string hand in robotHand)
+                  //{
+                  //    System.Diagnostics.Debug.Write(hand);
+                  //}
+      
+                  UserCardShow();
+                  TopCardShow();
+              }
 
 ### UserCardShow()
 -ebben a fuggvényben a felhasználó kártyáit frissítsuk a felhasználónak, ezt sokszok megkell hívni mivel amikor rákattintunk egy kártyára és az eltunik akkor ezt frissíteni kell vagy ha húzunk egy új lapot.
@@ -99,51 +97,53 @@ private Random rnd = new Random();
 
 - mivel itt az egész canvast kitörlöm, ezért a laphuzas gombot is újrakell csinálni (adni kell egy click fuggvenyt neki es elkell helyezni canvason belul)
 
-        private void UserCard_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                string chosenUserCard = button.Content.ToString();
-
-                if (cardCanBePlaced(chosenUserCard))
-                {
-                    userHand.Remove(chosenUserCard);
-                    topCard = chosenUserCard;
-                    UserCardShow();
-                    TopCardShow();
-
-                    if (userHand.Count == 0)
-                    {
-                        MessageBox.Show("Congratulations! YOU WON!");
-                    }
-                    else
-                    {
-                        robotMove();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("You cant place THAT card");
-                }
-            }
-        }
+              private void UserCardShow()
+              {
+                  unoCanvas.Children.Clear();
+                  for (int i = 0; i < userHand.Count; i++)
+                  {
+                      Button btn = new Button
+                      {
+                          Content = userHand[i],
+                          Width = 50,
+                          Height = 70
+                      };
+                      Canvas.SetLeft(btn, 100 + i * 60);
+                      Canvas.SetTop(btn, 100);
+                      btn.Click += UserCard_Click;
+                      unoCanvas.Children.Add(btn);
+                  }
+      
+                  //kartyahuzas
+                  Button pickCardButton = new Button
+                  {
+                      Content = "Húzás",
+                      Width = 50,
+                      Height = 70
+                  };
+                  Canvas.SetLeft(pickCardButton, 160);
+                  Canvas.SetTop(pickCardButton, 200);
+                  pickCardButton.Click += PickCardButton_Click;
+                  unoCanvas.Children.Add(pickCardButton);
+              }
 
 ### TopCardShow()
 -ugyanaz mint a usercard csak ez a kozepso kartyat frissiti
 -ezt azert kell kulon mert amikor a robot mozog ezt akkor is kell frissiteni
 
-        private void TopCardShow()
-        {
-            Button topButton = new Button
-            {
-                Content = topCard,
-                Width = 50,
-                Height = 70
-            };
-            Canvas.SetLeft(topButton, 100);
-            Canvas.SetTop(topButton, 200);
-            myCanvas.Children.Add(topButton);
-        }
+              private void TopCardShow()
+              {
+                  Button topBtn = new Button
+                  {
+                      Content = topCard,
+                      Width = 50,
+                      Height = 70,
+                      IsEnabled = false
+                  };
+                  Canvas.SetLeft(topBtn, 100);
+                  Canvas.SetTop(topBtn, 200);
+                  unoCanvas.Children.Add(topBtn);
+              }
 
 
 ### UserCard_Click(object sender, RoutedEventArgs e)
@@ -151,53 +151,53 @@ private Random rnd = new Random();
 - belekell rakni egy kulon valtozoba, amennyiben az a kartya lerakhato rakja le, ha nem értesítse a felhasznalot, ezel egyutt meglehet nezni hogy az az utolso kartya volt e es ha lerakhato akkor nyert a felhasznalo
 - ha nem akkor a robot kovetkezik
 
-        private void UserCard_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                string chosenUserCard = button.Content.ToString();
-
-                if (cardCanBePlaced(chosenUserCard))
-                {
-                    userHand.Remove(chosenUserCard);
-                    topCard = chosenUserCard;
-                    UserCardShow();
-                    TopCardShow();
-
-                    if (userHand.Count == 0)
-                    {
-                        MessageBox.Show("Congratulations! YOU WON!");
-                    }
-                    else
-                    {
-                        robotMove();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("You cant place THAT card");
-                }
-            }
-        }
+              private void UserCard_Click(object sender, RoutedEventArgs e)
+              {
+                  if (sender is Button button)
+                  {
+                      string chosenUserCard = button.Content.ToString();
+      
+                      if (cardCanBePlaced(chosenUserCard))
+                      {
+                          userHand.Remove(chosenUserCard);
+                          topCard = chosenUserCard;
+      
+                          UserCardShow();
+                          TopCardShow();
+      
+                          if (userHand.Count == 0)
+                          {
+                              Winner("Gratulalok nyertel");
+                          }
+                          else
+                          {
+                              RobotPut();
+                          }
+                      }
+                      else
+                      {
+                          MessageBox.Show("nem rakhatod le ezt a kártyát");
+                      }
+                  }
+              }
 
 ### PickACard_Click(object sender, RoutedEventArgs e)
 - hogyha a pakli még nem üres akkor húzhatunk egy kartyat ami hozzaadodik a felhasznalo kartyaihoz, és mivel az már egy körnek számít, a robot jön.
 
-        private void PickACard_Click(object sender, RoutedEventArgs e)
-        {
-            if (deck.Count > 0)
-            {
-                string newCard = deck[0];
-                deck.RemoveAt(0);
-                userHand.Add(newCard);
-                UserCardShow();
-                robotMove();
-            }
-            else
-            {
-                MessageBox.Show("No more card in the deck!!!");
-            }
-        }
+              private void PickCardButton_Click(object sender, RoutedEventArgs e)
+              {
+                  if (deck.Count > 0)
+                  {
+                      userHand.Add(CardUp());
+                      UserCardShow();
+                      TopCardShow();
+                      RobotPut();
+                  }
+                  else
+                  {
+                      Winner("Elfogyott a pakli, döntetlen.");
+                  }
+              }
 
 ### robotMove()
 -alapbol a robot nem rakhat le kartyat mert elotte megkell nezni hogy a kartyaibol van e a felteteleknek megfelelo kartya
@@ -205,38 +205,56 @@ private Random rnd = new Random();
 -amennyiben nincsen olyan kartyaja de a pakliban van még kartya akkor huzzon egyet, frissitse a top kartyat ha veletlen rakott volna
 -megkell nezni ha lerakas utan nincs e tobb kartyaja a robotnak ha nincs akkor o nyert
 
-        private void robotMove()
-        {
-            bool canPlace = false;
-            for (int i = 0; i < robotHand.Count; i++)
-            {
-                if (cardCanBePlaced(robotHand[i]))
-                {
-                    topCard = robotHand[i];
-                    robotHand.RemoveAt(i);
-                    canPlace = true;
-                    break;
-                }
-            }
+              private void RobotPut()
+              {
+                  bool canPlace = false;
+                  for (int i = 0; i < robotHand.Count; i++)
+                  {
+                      if (cardCanBePlaced(robotHand[i]))
+                      {
+                          topCard = robotHand[i];
+                          robotHand.RemoveAt(i);
+                          canPlace = true;
+                          break;
+                      }
+                  }
+      
+                  foreach (string hand in robotHand)
+                  {
+                      System.Diagnostics.Debug.Write(hand + "\n");
+                  }
+      
+                  if (!canPlace && deck.Count > 0)
+                  {
+                      robotHand.Add(CardUp());
+                  }
+                  TopCardShow();
+      
+                  if (robotHand.Count == 0)
+                  {
+                      Winner("A robot nyert");
+                  }
+      
+              }
 
-            if (canPlace == false && deck.Count > 0)
-            {
-                string newCard = deck[0];
-                deck.RemoveAt(0);
-                robotHand.Add(newCard);
-            }
-            TopCardShow();
-
-            if (robotHand.Count == 0)
-            {
-                MessageBox.Show("The Robot WON!!");
-            }
-        }
-
-###cardCanBePlaced(string card)
+### cardCanBePlaced(string card)
 -ezt a fuggvenyt csak ugy lehet elerni ha megadunk neki egy kartyat amit letud ellenorizni
 -szétszedi a stringet, megnézi hogy a szin vagy a szám matchel- e ha igen akkor true-val tér vissza
 -ha nem akkor false-al
+
+              private bool cardCanBePlaced(string card)
+              {
+                  string[] topCardParts = topCard.Split(' ');
+                  string[] cardParts = card.Split(' ');
+      
+                  return topCardParts[0] == cardParts[0] || topCardParts[1] == cardParts[1];
+              }
+      
+              private void Winner(string message)
+              {
+                  MessageBox.Show(message);
+                  unoCanvas.Children.Clear();
+              }
 
 
 using System.Text;
